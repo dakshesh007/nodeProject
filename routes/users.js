@@ -3,11 +3,11 @@ const router = express.Router()
 
 const {UserHelper} = require('../helper')
 
-router.post('/add',async (req,res)=>{
-  let paylod = req.body
+router.post('/find',async (req,res)=>{
+  let query = req.body
   try {
-    let user = await UserHelper.add(paylod)
-    res.status(201).send(user)
+    let user = await UserHelper.find(query)
+    res.status(200).send(user)
   } catch (e) {
     console.log(e)
     res.status(500).send({error: e.message})

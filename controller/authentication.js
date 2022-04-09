@@ -1,4 +1,4 @@
-const {UserHelper,BecryptHelper} = require("../helper")
+const { UserHelper, BecryptHelper, TokenHelper } = require("../helper")
 class Authentication {
   async login(req,res){
     try {
@@ -20,6 +20,13 @@ class Authentication {
       if(!checkedPass)return res.status(401).send({
         error:"Invalid Password"
       })
+      
+      delete user.password
+      let accessToken = TokenHelper.generateToken({...user})
+      res.cookie('accessToken', accessToken, {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+        });
       
        res.send({ user })
       

@@ -1,4 +1,5 @@
 module.exports = {
   UserHelper : require('./user'),
-  BecryptHelper: require('./becrypt')
+  BecryptHelper: require('./becrypt'),
+  TokenHelper: require('./tokens')
 }
