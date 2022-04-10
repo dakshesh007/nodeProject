@@ -1,6 +1,8 @@
 const busboy = require('busboy')
-const { PostHelper } = require('../helper')
+const { PostHelper, LikeHelper } = require('../helper')
 const AwsUtils = require('../utils/s3')
+const constant = require('../constants')
+
 class Post{
   async create(req,res){
     try {
@@ -22,7 +24,6 @@ class Post{
           //url = await AwsUtils.upload()
       });
       bb.on('field', (name, val, info) => {
-        console.log(`Field [${name}]: value: %j`, val);
         if(name === "text"){
           text = val
         }
@@ -52,6 +53,50 @@ class Post{
   }
   
   async edit(req,res){}
+  
+  async like(req,res){
+    try {
+    const { post, type } = req.body
+    const { _id:user } = req.user
+    
+    const postInfo = await PostHelper.findOne({
+      _id: post,
+      isDeleted: false
+    })
+    
+    if(!postInfo) return res.status(401).send({
+      error: "post not found or it is deleted."
+    })
+    
+    switch (type) {
+      case constant.POST.LIKE:
+        await LikeHelper.likePost({
+          user,
+          post
+        })
+        break;
+        case constant.POST.DISLIKE:
+          await LikeHelper.disLikePost({
+            user,
+            post
+          })
+        break;
+      default:
+        return res.status(401).send({
+          error:'invalid type'
+        })
+    }
+    
+    res.send({
+      message:`successfully ${type === constant.POST.LIKE ? 'liked' : 'disliked' } on post`
+    })
+    
+    } catch (e) {
+      res.status(500).send({
+        error: e.message
+      })
+    }
+  }
 }
 
 module.exports = new Post()

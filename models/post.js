@@ -16,5 +16,9 @@ const postSchema = new Schema({
   url:{
     type: Array,
   },
+  isDeleted:{
+    type: Boolean,
+    default: false
+  }
 },{timestamps: true})
 module.exports = mongoose.model("posts",postSchema)
