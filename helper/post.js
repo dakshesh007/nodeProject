@@ -1,9 +1,9 @@
-const  User = require('../models/users')
+const Post = require('../models/post')
 
-class UserHelper {
+class PostHelper{
   async add(paylod){
     try {
-      return await User.create(paylod)
+      return await Post.create(paylod)
     } catch (e) {
       console.log(e)
       throw e
@@ -12,7 +12,7 @@ class UserHelper {
   
   async find(query){
     try {
-      return await User.find(query)
+      return await Post.find(query)
     } catch (e) {
       throw e
     }
@@ -20,11 +20,12 @@ class UserHelper {
   
   async findOne(query){
     try {
-      return await User.findOne(query).lean()
+      return await Post.findOne(query).lean()
     } catch (e) {
       throw e
     }
   }
+  
 }
 
-module.exports = new UserHelper()
+module.exports = new PostHelper()
