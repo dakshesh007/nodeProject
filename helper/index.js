@@ -3,5 +3,6 @@ module.exports = {
   BecryptHelper: require('./becrypt'),
   TokenHelper: require('./tokens'),
   PostHelper: require('./post'),
-  LikeHelper: require('./like')
+  LikeHelper: require('./like'),
+  NotificationHelper: require('./notification')
 }

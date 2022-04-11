@@ -66,6 +66,12 @@ class Authentication {
       
        delete user.password
        
+      let accessToken = TokenHelper.generateToken({...user})
+      res.cookie('accessToken', accessToken, {
+            maxAge: 1000 * 60 * 60 * 24,
+            httpOnly: true,
+        });
+       
        res.send({ user })
       
     } catch (e) {

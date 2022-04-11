@@ -1,5 +1,5 @@
 const busboy = require('busboy')
-const { PostHelper, LikeHelper } = require('../helper')
+const { PostHelper, LikeHelper, NotificationHelper } = require('../helper')
 const AwsUtils = require('../utils/s3')
 const constant = require('../constants')
 
@@ -74,6 +74,14 @@ class Post{
           user,
           post
         })
+        
+        await NotificationHelper.save({
+          from: user,
+          to: postInfo.user,
+          post,
+          type: constant.NOTIFICATION_TYPE.LIKE
+        })
+        
         break;
         case constant.POST.DISLIKE:
           await LikeHelper.disLikePost({
